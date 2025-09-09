@@ -1,0 +1,4 @@
+psycopg2
+mlflow
+scikit-learn
+boto3
