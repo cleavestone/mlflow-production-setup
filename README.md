@@ -28,6 +28,8 @@ This setup enables:
                                | (Metadata)   |
                                +-------------+
 ```
+
+
 ## Step 1: Launch EC2 Instance
 
 1. Go to **AWS EC2 Console** → Launch a new instance.
@@ -37,9 +39,11 @@ This setup enables:
    - `22` → SSH
 4. Connect via SSH:
 
+
 ```bash
 ssh -i "your-key.pem" ubuntu@<EC2_PUBLIC_IP>
 ```
+
 ## Step 2: Update Packages and Install Dependencies
 
 1. **Update and upgrade system packages**
@@ -47,11 +51,11 @@ ssh -i "your-key.pem" ubuntu@<EC2_PUBLIC_IP>
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
-*** Install Python 3 and pip
+### Install Python 3 and pip
 ```bash
 sudo apt install python3-pip -y
 ```
-*** Install MLflow and PostgreSQL driver
+### Install MLflow and PostgreSQL driver
 ```bash
 pip3 install mlflow psycopg2-binary boto3
 ```
@@ -66,6 +70,7 @@ pip3 install mlflow psycopg2-binary boto3
 
 ```bash
 aws s3 ls s3://mlflow-artifacts-cleave
+```
 
 ## Step 4: Setup RDS PostgreSQL
 
@@ -89,6 +94,7 @@ mlflow server \
   --default-artifact-root s3://mlflow-artifacts-cleave \
   --host 0.0.0.0 \
   --port 5000
+```
 
 ## Step 6: Use MLflow Python Client to Log Experiments Remotely
 
@@ -146,3 +152,14 @@ model = mlflow.pyfunc.load_model("models:/IrisRF/Production")
 # Make predictions
 predictions = model.predict(X_test)
 ```
+## Concepts Learned
+
+Through this setup, I gained hands-on experience with:
+
+- **MLflow Tracking** → Logging experiments, metrics, and models to a centralized server.
+- **Remote Experiment Management** → Running training scripts locally while storing results on a cloud-hosted MLflow server.
+- **AWS EC2** → Provisioning and securing a virtual machine to host MLflow.
+- **AWS S3** → Using object storage for scalable artifact management (datasets, models, plots).
+- **AWS RDS (PostgreSQL)** → Setting up a relational database as a backend store for experiment metadata.
+- **IAM Roles & Security** → Configuring access permissions and securing communication between EC2, S3, and RDS.
+- **Production MLflow Server** → Running MLflow as a persistent service to support collaborative and reproducible ML workflows.
